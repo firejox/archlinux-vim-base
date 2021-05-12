@@ -1,8 +1,9 @@
-FROM archlinux/base:latest as builder
+FROM archlinux:base as builder
 
 MAINTAINER Firejox <firejox@gmail.com>
 
-RUN pacman -Sy --needed --noconfirm base-devel git python2 python3 ruby
+RUN pacman -Syu --noconfirm
+RUN pacman -Syu --needed --noconfirm base-devel git python2 python3 ruby
 
 WORKDIR /usr/local/src
 
@@ -17,7 +18,7 @@ RUN git clone https://github.com/vim/vim \
       --enable-rubyinterp \
   && make install
 
-FROM archlinux/base:latest
+FROM archlinux:base-devel
 
 COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /usr/local/share /usr/local/share
